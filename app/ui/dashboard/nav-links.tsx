@@ -1,8 +1,15 @@
+'use client';
+
 import {
   UserGroupIcon,
   HomeIcon,
   DocumentDuplicateIcon,
 } from '@heroicons/react/24/outline';
+import Link from 'next/link'
+import { usePathname } from 'next/navigation';
+
+//您可以使用 CSS 样式一章中介绍的 clsx 库在链接处于活动状态时有条件地应用类名。当 link.href 与 pathname 匹配时，链接应以蓝色文本和浅蓝色背景显示。
+import clsx from 'clsx';
 
 // Map of links to display in the side navigation.
 // Depending on the size of the application, this would be stored in a database.
@@ -17,19 +24,27 @@ const links = [
 ];
 
 export default function NavLinks() {
+  //接下来，将路径分配给 <NavLinks /> 组件内名为 pathname 的变量：
+  const pathname = usePathname();
   return (
     <>
       {links.map((link) => {
         const LinkIcon = link.icon;
         return (
-          <a
+          <Link
             key={link.name}
             href={link.href}
-            className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3"
+            // className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3"
+            className={clsx(
+              'flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3',
+              {
+                'bg-sky-100 text-blue-600': pathname === link.href,
+              },
+            )}
           >
             <LinkIcon className="w-6" />
             <p className="hidden md:block">{link.name}</p>
-          </a>
+          </Link>
         );
       })}
     </>
