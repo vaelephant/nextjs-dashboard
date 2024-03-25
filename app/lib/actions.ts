@@ -33,22 +33,23 @@ export type State = {
     message?: string | null;
 };
 export async function createInvoice(prevState: State, formData: FormData) {
-    //const { customerId, amount, status } = CreateInvoice.parse({
+    const { customerId, amount, status } = CreateInvoice.parse({
     // Validate form fields using Zod
-    const validatedFields = CreateInvoice.safeParse({
+    // const validatedFields = CreateInvoice.safeParse({
         customerId: formData.get('customerId'),
         amount: formData.get('amount'),
         status: formData.get('status'),
     });
 
     // If form validation fails, return errors early. Otherwise, continue.
-    if (!validatedFields.success) {
-        return {
-            errors: validatedFields.error.flatten().fieldErrors,
-            message: 'Missing Fields. Failed to Create Invoice.',
-        };
-    }
+    // if (!validatedFields.success) {
+    //     return {
+    //         errors: validatedFields.error.flatten().fieldErrors,
+    //         message: 'Missing Fields. Failed to Create Invoice.',
+    //     };
+    // }
     const amountInCents = amount * 100;
+
     const date = new Date().toISOString().split('T')[0];
     try {
         await sql`
